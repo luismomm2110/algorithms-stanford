@@ -7,33 +7,43 @@
 # Compare element by element of first and second array and insert in the result
 # If the element of the second is copied, then this element is bigger then all remaining
 # in 1st, so add this to Count Inversion
-
 import numpy as np
 
-def sort_and_count(baseCaseArray):
-    if baseCaseArray[0] > 
+def computeInv(withInvArray, countSplit):
+
+    if (len(withInvArray == 4)):
+        sortBaseCase(withInvArray, countSplit)
+    else:     
+        firstHalfInv, secondHalfInv = splitInTwo(withInvArray) 
+        computeInv(firstHalfInv, count)
+        computeInv(secondHalfInv, count)
+    
+    return countSplit
+
+def sortBaseCase(baseCaseArray, countInv):
+    firstArray, secondArray = splitInTwo(baseCaseArray)
+    
+    if firstArray[0] > firstArray[1]:
+        firstArray = [firstArray[0], firstArray[1]]
+        countInv = countInv + 1
+        
+    if secondArray[0] > secondArray[1]:
+        secondArray = [secondArray[0], secondArray[1]]
+        countInv = countInv + 1
+
+    return firstArray, secondArray, countInv; 
 
 def splitInTwo(wholeArray):
     arrayOfArrays = np.array_split(wholeArray, 2)
 
     return arrayOfArrays[0], arrayOfArrays[1];
 
-
-def merge_and_count_inv(withInvArray):
-    countSplit = 0
-
-    if (len(withInvArray == 2):
-        sort_and_count(withInvArray)
-
-
-    firstHalfInv, secondHalfInv = splitInTwo(withInvArray) 
-
-
 def main()
     print("Count Inversions")
     
     entryArray = np.array([3, 1, 4, 2]])
-    merge_and_count_inv(entryArray)
+    countInv = 0
+    computeInv(entryArray, countInv)
 
 def __name__ == "__main__":
     main()
