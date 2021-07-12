@@ -9,41 +9,63 @@
 # in 1st, so add this to Count Inversion
 import numpy as np
 
+countInv = 0
+
 def computeInv(withInvArray, countSplit):
 
     if (len(withInvArray == 4)):
         sortBaseCase(withInvArray, countSplit)
     else:     
         firstHalfInv, secondHalfInv = splitInTwo(withInvArray) 
-        computeInv(firstHalfInv, count)
-        computeInv(secondHalfInv, count)
+        computeInv(firstHalfInv)
+        computeInv(secondHalfInv)
+        mergeAndCount(firstHalfInv, secondHalfInv)
     
-    return countSplit
+def mergeAndCount(firstArray, secondArray):
+    global countInv
+    sortedAndMergedArray = np.empty(2*len(firstArray))
+    
+    positionFirstArray = 1
+    positionSecondArray = 1
 
-def sortBaseCase(baseCaseArray, countInv):
+    for positionSortedAndMergedArray in len(firstArray):
+            if firstArray[positionFirstArray] <= secondArray[positionSecondArray]:            
+                sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
+                positionFirstArray = positionFirstArray + 1
+                # no split in this case 
+            else:  
+                sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
+                countInv = len(firstArray) - positionFirstArray
+                positionSecondArray = positionSecondArray + 1
+
+    return sortedAndMergedArray
+
+
+def sortBaseCase(baseCaseArray):
     firstArray, secondArray = splitInTwo(baseCaseArray)
+    global countInv
     
     if firstArray[0] > firstArray[1]:
         firstArray = [firstArray[0], firstArray[1]]
-        countInv = countInv + 1
+        countInv= countInv + 1
         
     if secondArray[0] > secondArray[1]:
         secondArray = [secondArray[0], secondArray[1]]
         countInv = countInv + 1
 
-    return firstArray, secondArray, countInv; 
+    return firstArray, secondArray; 
 
 def splitInTwo(wholeArray):
     arrayOfArrays = np.array_split(wholeArray, 2)
 
     return arrayOfArrays[0], arrayOfArrays[1];
 
-def main()
+def main():
     print("Count Inversions")
     
     entryArray = np.array([3, 1, 4, 2]])
     countInv = 0
     computeInv(entryArray, countInv)
 
-def __name__ == "__main__":
+if __name__ == "__main__":
     main()
