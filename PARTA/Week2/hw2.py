@@ -11,61 +11,54 @@ import numpy as np
 
 countInv = 0
 
-def computeInv(withInvArray, countSplit):
-
-    if (len(withInvArray == 4)):
-        sortBaseCase(withInvArray, countSplit)
-    else:     
-        firstHalfInv, secondHalfInv = splitInTwo(withInvArray) 
-        computeInv(firstHalfInv)
-        computeInv(secondHalfInv)
-        mergeAndCount(firstHalfInv, secondHalfInv)
-    
-def mergeAndCount(firstArray, secondArray):
+def mergeAndCount(entryArray):
     global countInv
-    sortedAndMergedArray = np.empty(2*len(firstArray))
-    
-    positionFirstArray = 1
-    positionSecondArray = 1
 
-    for positionSortedAndMergedArray in len(firstArray):
+    if len(entryArray) > 1:
+
+        firstArray, secondArray = splitInTwo(entryArray)
+
+        mergeAndCount(firstArray)
+        mergeAndCount(secondArray)
+
+
+        sortedAndMergedArray = np.empty(len(entryArray))
+        positionSortedAndMergedArray = positionFirstArray  = positionSecondArray = 0 
+            
+        while positionFirstArray < len(firstArray) and positionSecondArray < len(secondArray):
             if firstArray[positionFirstArray] <= secondArray[positionSecondArray]:            
                 sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
                 positionFirstArray = positionFirstArray + 1
-                # no split in this case 
+                # no inversion in this case 
             else:  
                 sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
                 countInv = len(firstArray) - positionFirstArray
                 positionSecondArray = positionSecondArray + 1
+            positionSortedAndMergedArray = positionSortedAndMergedArray + 1
 
-    return sortedAndMergedArray
+        while positionFirstArray < len(firstArray):
+            sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
+            positionFirstArray = positionFirstArray + 1
+            positionSortedAndMergedArray = positionSortedAndMergedArray + 1
 
-
-def sortBaseCase(baseCaseArray):
-    firstArray, secondArray = splitInTwo(baseCaseArray)
-    global countInv
-    
-    if firstArray[0] > firstArray[1]:
-        firstArray = [firstArray[0], firstArray[1]]
-        countInv= countInv + 1
-        
-    if secondArray[0] > secondArray[1]:
-        secondArray = [secondArray[0], secondArray[1]]
-        countInv = countInv + 1
-
-    return firstArray, secondArray; 
-
+        while positionSecondArray < len(secondArray):
+            sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
+            positionSecondArray = positionSecondArray + 1
+            positionSortedAndMergedArray = positionSortedAndMergedArray + 1
+            
 def splitInTwo(wholeArray):
-    arrayOfArrays = np.array_split(wholeArray, 2)
+    positionHalfArray = len(wholeArray)//2
+    leftArray = wholeArray[:positionHalfArray]
+    rightArray = wholeArray[positionHalfArray:]
 
-    return arrayOfArrays[0], arrayOfArrays[1];
+    return leftArray, rightArray;
 
 def main():
     print("Count Inversions")
     
-    entryArray = np.array([3, 1, 4, 2]])
-    countInv = 0
-    computeInv(entryArray, countInv)
+    entryArray = np.array([4, 3, 2, 1])
+    mergeAndCount(entryArray)
+    print(countInv)
 
 if __name__ == "__main__":
     main()
