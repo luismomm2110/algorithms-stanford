@@ -1,64 +1,65 @@
-# PSEUDOCODE
-#  1) DIVIDE 2) CONQUER 3) MERGE AND PIGGYBACK NUMBER OF INVERSIONS 
-# Declare variable to count inversions
-# Split arrays in two until BASE CASE  
-# THEN sort the remaining array AND count inversions
-# THEN merge... in merge, SORT and count inversions for the following:
-# Compare element by element of first and second array and insert in the result
-# If the element of the second is copied, then this element is bigger then all remaining
-# in 1st, so add this to Count Inversion
-import numpy as np
+def mergeSort(entryArray, size):
+    temp_array = [0]*size
+    return _mergeSort(entryArray, temp_array, 0, size-1)
+ 
 
-countInv = 0
+ 
+def _mergeSort(entryArray, temp_array, left, right):
+    inv_count = 0
+ 
+    if left < right:
+ 
+        mid = (left + right)//2
 
-def mergeAndCount(entryArray):
-    global countInv
+        inv_count += _mergeSort(entryArray, temp_array,
+                                    left, mid)
 
-    if len(entryArray) > 1:
+ 
+        inv_count += _mergeSort(entryArray, temp_array,
+                                  mid + 1, right)
+ 
+ 
+        inv_count += merge(entryArray, temp_array, left, mid, right)
+    return inv_count
+ 
+def merge(entryArray, temp_array, left, mid, right):
+    i = left     
+    j = mid + 1 
+    k = left    
+    inv_count = 0
+ 
+    while i <= mid and j <= right:
+ 
+        if entryArray[i] <= entryArray[j]:
+            temp_array[k] = entryArray[i]
+            k += 1
+            i += 1
+        else:
+            temp_array[k] = entryArray[j]
+            inv_count += (mid-i + 1)
+            k += 1
+            j += 1
+ 
+    while i <= mid:
+        temp_array[k] = entryArray[i]
+        k += 1
+        i += 1
+ 
+    while j <= right:
+        temp_array[k] = entryArray[j]
+        k += 1
+        j += 1
+ 
+    for loop_var in range(left, right + 1):
+        entryArray[loop_var] = temp_array[loop_var]
+         
+    return inv_count
 
-        firstArray, secondArray = splitInTwo(entryArray)
-
-        mergeAndCount(firstArray)
-        mergeAndCount(secondArray)
-
-
-        sortedAndMergedArray = np.empty(len(entryArray))
-        positionSortedAndMergedArray = positionFirstArray  = positionSecondArray = 0 
-            
-        while positionFirstArray < len(firstArray) and positionSecondArray < len(secondArray):
-            if firstArray[positionFirstArray] <= secondArray[positionSecondArray]:            
-                sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
-                positionFirstArray = positionFirstArray + 1
-                # no inversion in this case 
-            else:  
-                sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
-                countInv = len(firstArray) - positionFirstArray
-                positionSecondArray = positionSecondArray + 1
-            positionSortedAndMergedArray = positionSortedAndMergedArray + 1
-
-        while positionFirstArray < len(firstArray):
-            sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
-            positionFirstArray = positionFirstArray + 1
-            positionSortedAndMergedArray = positionSortedAndMergedArray + 1
-
-        while positionSecondArray < len(secondArray):
-            sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
-            positionSecondArray = positionSecondArray + 1
-            positionSortedAndMergedArray = positionSortedAndMergedArray + 1
-            
-def splitInTwo(wholeArray):
-    positionHalfArray = len(wholeArray)//2
-    leftArray = wholeArray[:positionHalfArray]
-    rightArray = wholeArray[positionHalfArray:]
-
-    return leftArray, rightArray;
-
-def main():
-    print("Count Inversions")
-    
-    entryArray = np.array([4, 3, 2, 1])
-    mergeAndCount(entryArray)
-    print(countInv)
+def main(): 
+    arr = [1, 20, 6, 4, 5]
+    n = len(arr)
+    result = mergeSort(arr, n)
+    print("Number of inversions are", result)
 
 if __name__ == "__main__":
     main()
