@@ -7,52 +7,60 @@
 # Compare element by element of first and second array and insert in the result
 # If the element of the second is copied, then this element is bigger then all remaining
 # in 1st, so add this to Count Inversion
+def mergeAndSort(entryArray):
+	numberInv = 0
 
-import numpy as np
+	if len(entryArray) > 1:
 
-def countInversions(entryArray):
-	tempArray = [0]*len(entryArray)
-	return	mergeAndSort(entryArray, tempArray)
+		firstArray, secondArray = splitInTwo(entryArray)
 
-def mergeAndSort9(entryArray, tempArray):
-    numberInv = 0
-
-    if len(entryArray) > 1:
-
-	firstArray, secondArray = splitInTwo(entryArray)
-
-	numberInv += mergeAndSort(firstArray)
-        numberInv += mergeAndSort(secondArray)
-	
-	numberInv += merge(entryArray, tempArray)
+		numberInv += mergeAndSort(firstArray)
+		numberInv += mergeAndSort(secondArray)
+		
+		numberInv += merge(entryArray, firstArray, secondArray)
 
 	return numberInv
 
-def merge(entryArray, tempArray)
-		    
-		while positionFirstArray < len(firstArray) and positionSecondArray < len(secondArray):
-		    if firstArray[positionFirstArray] <= secondArray[positionSecondArray]:            
-			sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
-			positionFirstArray = positionFirstArray + 1
-			# no inversion in this case 
-		    else:  
-			sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
-			countInv = len(firstArray) - positionFirstArray
-			positionSecondArray = positionSecondArray + 1
-		    positionSortedAndMergedArray = positionSortedAndMergedArray + 1
+def merge(entryArray, firstArray, secondArray):
+	numberInv = 0
+	tempArray = 2*len(firstArray)*[0]
+	
+	i = 0
+	j = 0
+	k = 0
+	endArray = len(firstArray) 	
 
-		while positionFirstArray < len(firstArray):
-		    sortedAndMergedArray[positionSortedAndMergedArray] = firstArray[positionFirstArray]
-		    positionFirstArray = positionFirstArray + 1
-		    positionSortedAndMergedArray = positionSortedAndMergedArray + 1
+	while i  < endArray and j < endArray:
+		if firstArray[i] <= secondArray[j]:
+			tempArray[k] = firstArray[i]
+			i += 1
+			k += 1
+		else:
+			tempArray[k] = secondArray[j]
+			j += 1	
+			k += 1
+			numberInv = numberInv + k + 1
 
-		while positionSecondArray < len(secondArray):
-		    sortedAndMergedArray[positionSortedAndMergedArray] = secondArray[positionSecondArray]
-		    positionSecondArray = positionSecondArray + 1
-		    positionSortedAndMergedArray = positionSortedAndMergedArray + 1
-
+	while i < endArray:
+		tempArray[k] = firstArray[i]
+		i += 1
+		k += 1
+	while j < endArray:
+		tempArray[k] = secondArray[j]
+		j += 1
+		k += 1
+	
+	entryArray = populateArray(entryArray, tempArray)	
+	 
 	return numberInv
             
+def populateArray(entryArray, tempArray):
+	
+	for i in range(len(entryArray)):
+		entryArray[i] = tempArray[i]
+
+	return entryArray
+
 def splitInTwo(wholeArray):
 	    positionHalfArray = len(wholeArray)//2
 	    leftArray = wholeArray[:positionHalfArray]
@@ -61,11 +69,11 @@ def splitInTwo(wholeArray):
 	    return leftArray, rightArray;
 
 def main():
-	    print("Count Inversions")
+    print("Count Inversions")
 	 
-	    entryArray = np.array([4, 3, 2, 1])
-	    countInversions(entryArray)
-	    print(countInv)
+    entryArray = [4, 3, 2, 1]
+    countInv = mergeAndSort(entryArray)
+    print(countInv)
 
 if __name__ == "__main__":
-	    main()
+    main()
