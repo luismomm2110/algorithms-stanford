@@ -1,42 +1,54 @@
 totalComparisons = 0
 
-def quickSort(start, end, inputArray):
+PIVOT_FIRST = 1
+PIVOT_FINAL = 2
+PIVOT_MEDIAN = 3
+
+def quickSort(start, end, inputArray, choice):
     global totalComparisons
 
-    if (start < end):
-        totalComparisons += (end - start)
-        
-        partitionIndex = partition(start, end, inputArray)
+    if (start >= end):
+        return
 
-        quickSort(start, partitionIndex - 2, inputArray) 
-        quickSort(partitionIndex, end, inputArray) 
+    totalComparisons += (end - start)
+    
+    partitionIndex = partition(start, end, inputArray, choice)
 
-def partition(start, end, inputArray):
-    pivot = inputArray[start]
+    quickSort(start, partitionIndex-2, inputArray, choice) 
+    quickSort(partitionIndex, end, inputArray, choice) 
+
+def partition(start, end, inputArray, choice):
+    pivot = choose_pivot(inputArray, start, end, choice)
     j = i = start + 1
 
-    while j < end:
+    while j <= end:
         if inputArray[j] < pivot:
-            inputArray = swapPositions(inputArray, i, j)
+            swapPositions(inputArray, i, j)
             i += 1
         j += 1
 
-    # import pdb; pdb.set_trace()
-    inputArray = swapPositions(inputArray, start, i-1)       
+    swapPositions(inputArray, start, i-1)       
 
     return i
+
+def choose_pivot(inputArray, start, end, choice):
+    if choice == PIVOT_FIRST:
+        return inputArray[start]
+    elif choice == PIVOT_FINAL:
+        pivot = inputArray[end]
+        swapPositions(inputArray, end, start)
+
+        return pivot
 
 def swapPositions(inputArray, pos1, pos2):
     inputArray[pos1], inputArray[pos2] = inputArray[pos2], inputArray[pos1]
     
-    return inputArray
-
 def main():
     global totalComparisons
 
     inputArray = [1, 11, 5, 15, 2, 12, 9, 99, 77, 0]
-    inputArray = [1,3,5,2,4,6]
-    quickSort(0, len(inputArray) - 1, inputArray)
+    inputArray = [10, 9, 8, 7]
+    quickSort(0, len(inputArray) - 1, inputArray, PIVOT_FINAL)
     print("Sorted array: ", inputArray)
     print(totalComparisons)
 
