@@ -33,22 +33,61 @@ def partition(start, end, inputArray, choice):
 
 def choose_pivot(inputArray, start, end, choice):
     if choice == PIVOT_FIRST:
-        return inputArray[start]
+        pivot = inputArray[start]
     elif choice == PIVOT_FINAL:
         pivot = inputArray[end]
         swapPositions(inputArray, end, start)
+    elif choice == PIVOT_MEDIAN:
+        index_median = median_of_threes(inputArray, start, end)
+        pivot = inputArray[index_median]
+        swapPositions(inputArray, start, index_median)
 
-        return pivot
+    return pivot
+
+def median_of_threes(inputArray, start, end):
+    middle_index = int((start + end)//2)
+
+    three_elements = [inputArray[start], inputArray[middle_index], inputArray[end]]
+
+    if three_elements[0] > three_elements[1]:
+        if three_elements[0] < three_elements[2]:
+            index_median = start
+        elif three_elements[1] > three_elements[2]:
+            index_median = middle_index
+        else: 
+            index_median = end
+    else:
+        if three_elements[1] < three_elements[2]:
+            index_median = middle_index
+        elif three_elements[0] > three_elements[2]: 
+            index_median = start
+        else: 
+            index_median = end
+
+    return index_median
 
 def swapPositions(inputArray, pos1, pos2):
     inputArray[pos1], inputArray[pos2] = inputArray[pos2], inputArray[pos1]
+
+def create_task_list():
+    f = open('QuickSort.txt', 'r')
+    task_list = []
+
+    for line in f.readlines():
+        task_list.append(int(line))
     
+    return task_list
+
 def main():
     global totalComparisons
 
-    inputArray = [1, 11, 5, 15, 2, 12, 9, 99, 77, 0]
-    inputArray = [10, 9, 8, 7]
-    quickSort(0, len(inputArray) - 1, inputArray, PIVOT_FINAL)
+    inputArray = [1,3,5,2,4,6]
+    quickSort(0, len(inputArray) - 1, inputArray, PIVOT_MEDIAN)
+    print("Sorted array: ", inputArray)
+    print(totalComparisons)
+
+    inputArray = create_task_list()
+    quickSort(0, len(inputArray) - 1, inputArray, PIVOT_MEDIAN)
     print("Sorted array: ", inputArray)
     print(totalComparisons)
 
