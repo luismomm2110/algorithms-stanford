@@ -1,3 +1,4 @@
+
 def mergeSort(entryArray, size):
     temp_array = [0]*size
     return _mergeSort(entryArray, temp_array, 0, size-1)
