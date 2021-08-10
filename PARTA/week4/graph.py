@@ -1,6 +1,3 @@
-
-# Adjacency Matrix representation in Python
-
 class AdjNode:
     def __init__(self, value):
         self.vertex = value
@@ -11,8 +8,8 @@ class Graph:
         self.V = num
         self.graph = [None] * self.V
 
-    def get_edge(self, v):
-        return v
+    def get_edge(self, n):
+        return n
 
     def add_edge(self, s, d):
         node = AdjNode(d)
@@ -24,7 +21,17 @@ class Graph:
         self.graph[d] = node
 
     def get_num_edges(self):
-        return self.V
+        num_edges = 0
+
+        for i in range(self.V):
+            temp = self.graph[i]
+            while temp:
+                num_edges += 1
+                temp = temp.next
+        
+        num_edges = num_edges//2
+        
+        return num_edges
 
     # Print the graph
     def print_agraph(self):

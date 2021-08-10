@@ -12,14 +12,14 @@ import random as r
 
 # return edges
 
-def karge_min_cut(graph):
-    num_edges =  graph.get_num_edges()
+# def karge_min_cut(graph):
+    # num_edges =  graph.get_num_edges()
 
-    while num_edges < 2:
-        random_edge = r.randedge(0, num_edges + 1, 1)
-        graph.get
+    # while num_edges < 2:
+        # random_edge = r.randedge(0, num_edges + 1, 1)
+        # graph.get
 
-    return min_cut
+    # return min_cut
 
 def main():
     V = 4
@@ -30,7 +30,8 @@ def main():
     graph.add_edge(2, 3)
     graph.add_edge(1, 3)
 
-    print(karge_min_cut(graph))
+    graph.print_agraph()
+    print("Num edges: ", graph.get_num_edges())
 
 if __name__ == "__main__":
     main()
