@@ -17,24 +17,42 @@ class Graph:
         for key in self.graph:
             self.supervertices[key] = [key]
 
-    def contracte_edge(self, v1, v2):
-        for i in self.graph[v2]:
-            if v1 not in self.graph[i] and i is not v1:
-                self.graph[i].append(v1)
-            self.graph[v1].append(i)
+    def contracte_edge(self, stay_vertex, removed_vertex):
+        for i in self.graph[removed_vertex]:
+            if i is not stay_vertex and i in self.graph.keys():
+                self.graph[i].append(stay_vertex)
+                self.graph[stay_vertex].append(i)
         self.vertex_count -= 1
-        self.__remove_self_loops(v1)
-        self.graph.pop(v2)
+        self.__delete_old_vertex(removed_vertex)
+        self.graph.pop(removed_vertex)
 
-    def __remove_self_loops(self, v1):
-        for i in self.graph[v1]:
-            if i == v1:
-                self.graph[v1].remove(i)
+    def remove_self_loops(self, stay_vertex):
+        for i in self.graph[stay_vertex]:
+            if i == stay_vertex:
+                self.graph[stay_vertex].remove(i)
 
     def get_num_vertex(self):
         return self.vertex_count
     
+    def get_final_edges(self):
+        self.edges = 0
+        for i in self.graph.keys():
+            self.edges +=  len(self.graph[i])
+
+        return self.edges
+
+    def get_final_nodes(self):
+        return list(self.graph.keys())
+
+    def initial_total_edges(self):
+        return self.edges
+    
     def random_edge(self):
-        random_vertex = r.randrange(1, self.get_num_vertex() + 1, 1)
+        random_vertex = r.choice(list(self.graph.keys()))
         random_edge = r.choice(self.graph[random_vertex])  
         return random_vertex, random_edge      
+
+    def __delete_old_vertex(self, old_vertex):
+        for key in self.graph.keys():
+            if old_vertex in self.graph[key]:
+                self.graph[key] = list(filter(lambda a: a != old_vertex, self.graph[key]))
