@@ -1,6 +1,6 @@
 from graph import Graph
 import random as r
-
+from copy import deepcopy
 
 def karge_min_cut(entry_graph):
     while entry_graph.get_num_vertex() > 2:
@@ -11,13 +11,13 @@ def karge_min_cut(entry_graph):
 
     return entry_graph
 
-
 def main():
-    graph = Graph("test.txt")
+    graph = Graph("karge.txt")
     min_edges = graph.initial_total_edges()
 
     for i in range(len(graph.graph.keys())):
-        final_graph = karge_min_cut(Graph("test.txt"))
+        temp = deepcopy(graph)
+        final_graph = karge_min_cut(temp)
         if final_graph.get_final_edges() <= min_edges:
             min_edges = final_graph.get_final_edges()
             final_vertices = final_graph.get_final_nodes()

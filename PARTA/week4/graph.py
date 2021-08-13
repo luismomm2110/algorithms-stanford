@@ -7,7 +7,7 @@ class Graph:
         self.vertex_count = 0
         with open(graph_file, "r") as file:
             for path in file:
-                numbers = [int(x) for x in path.split() if x!='\n']
+                numbers = [int(x) for x in path.split('\t') if x!='\n']
                 vertex = numbers[0]
                 vertex_edges = numbers[1:]
                 self.graph[vertex] = vertex_edges
@@ -22,6 +22,7 @@ class Graph:
             if i is not stay_vertex and i in self.graph.keys():
                 self.graph[i].append(stay_vertex)
                 self.graph[stay_vertex].append(i)
+
         self.vertex_count -= 1
         self.__delete_old_vertex(removed_vertex)
         self.graph.pop(removed_vertex)
