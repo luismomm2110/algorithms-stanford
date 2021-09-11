@@ -40,7 +40,7 @@ class Graph:
         for i in self.graph.keys():
             self.edges +=  len(self.graph[i])
 
-        return self.edges
+        return self.edges//2
 
     def get_final_nodes(self):
         return list(self.graph.keys())
