@@ -3,7 +3,7 @@ import collections
 
 class Graph:
     def __init__(self):
-        self.graph = dict()
+        self.graph = collections.OrderedDict()
 
     def addEdge(self, u, v):
         if u in self.graph.keys():

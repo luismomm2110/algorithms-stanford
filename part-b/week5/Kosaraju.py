@@ -10,17 +10,24 @@ def fill_graph(textFile, graph):
         graph.addEdge(int(line[0]), int(line[1]))
 
 
-def DFSLoop(graph):
+def DFSLoop(g):
     t = 0
+    visited_nodes = [False for i in range(len(g.graph.keys()))]
+    print(visited_nodes)
+
+    for i in reversed(g.graph.keys()):
+        print(i)
+
 
 
 def main():
     g = Graph()
-    fill_graph("graph.txt", g)
+    fill_graph("test.txt", g)
     print(g.graph)
     gRev = g.reverse()
     print(gRev.graph)
-
+    print("printing keys")
+    DFSLoop(gRev)
 
 if __name__ == "__main__":
     main()
