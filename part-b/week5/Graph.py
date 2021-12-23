@@ -10,6 +10,9 @@ class Graph:
             self.graph[u].append(v)
         else:
             self.graph[u] = [v]
+        
+        if v not in self.graph.keys():
+            self.graph[v] = []
 
     def reverse(self):
         gRev = Graph()
