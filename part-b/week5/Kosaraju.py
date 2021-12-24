@@ -1,5 +1,5 @@
 from Graph import Graph
-
+import collections
 
 def fill_graph(textFile, graph):
     f = open(textFile, "r")
@@ -34,8 +34,9 @@ def SecondDFSLoop(g, visited_nodes, finishing_times, leaders):
     global s
 
     for i in reversed(sorted(finishing_times)):
-        current_edge = list(g.graph.keys()).index(i)
-        if not visited_nodes[current_edge]:
+        current_edge = list(g.graph.keys()).index(finishing_times.index(i) + 1) + 1
+
+        if not visited_nodes[current_edge-1]:
             s = current_edge
             secondDFS(g, current_edge, visited_nodes, leaders)
 
@@ -47,7 +48,11 @@ def secondDFS(g, i, visited_nodes, leaders):
     leaders[i-1] = s
     for edge in g.graph[i]:
         if not visited_nodes[edge - 1]:
-            secondDFS(g, edge, visited_nodes, leaders)
+          return secondDFS(g, edge, visited_nodes, leaders)
+
+def countSCCs(leaders):
+    count = collections.Counter(leaders)
+    return count
 
 
 def main():
@@ -75,6 +80,10 @@ def main():
 
     SecondDFSLoop(g, visited_nodes, finishing_times, leaders)
     print("Leaders : " + str(leaders))
+
+    c = countSCCs(leaders)
+    print(c)
+
 
 
 if __name__ == "__main__":
