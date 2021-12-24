@@ -1,5 +1,7 @@
 from Graph import Graph
 import collections
+import sys
+import threading
 
 def fill_graph(textFile, graph):
     f = open(textFile, "r")
@@ -10,28 +12,29 @@ def fill_graph(textFile, graph):
         graph.addEdge(int(line[0]), int(line[1]))
 
 
-def FirstDFSLoop(g, visited_nodes, finishing_times):
-    global t
+def FirstDFSLoop(g):
+    global t, finishing_times, visited_nodes
 
     for i in reversed(g.graph.keys()):
         if not visited_nodes[i-1]:
-            FirstDFS(g, i, visited_nodes, finishing_times)
+            FirstDFS(g, i)
 
 
-def FirstDFS(g, i, visited_nodes, finishing_times):
-    global t
+def FirstDFS(g, i):
+    global t, finishing_times, visited_nodes
+
     visited_nodes[i-1] = True
 
     for edge in g.graph[i]:
         if not visited_nodes[edge-1]:
-            FirstDFS(g, edge, visited_nodes, finishing_times)
+            FirstDFS(g, edge)
 
     t += 1
     finishing_times[i-1] = t
 
 
-def SecondDFSLoop(g, visited_nodes, finishing_times, leaders):
-    global s
+def SecondDFSLoop(g, leaders):
+    global s, visited_nodes, finishing_times
 
     for i in reversed(sorted(finishing_times)):
         current_edge = list(g.graph.keys()).index(finishing_times.index(i) + 1) + 1
@@ -56,30 +59,25 @@ def countSCCs(leaders):
 
 
 def main():
-    global t
-    global s
+    global t, s, finishing_times,  visited_nodes
     s = None
     t = 0
 
     g = Graph()
 
-    fill_graph("test.txt", g)
-    print("Graph :  " + str(g.graph))
+    fill_graph("graph.txt", g)
 
     gRev = g.reverse()
-    print("Graph reverse:" + str(gRev.graph))
 
     visited_nodes = [False for i in range(len(g.graph.keys()))]
     finishing_times = [0 for i in range(len(g.graph.keys()))]
 
-    FirstDFSLoop(gRev, visited_nodes, finishing_times)
-    print("Finishing times: " + str(finishing_times))
+    FirstDFSLoop(gRev)
 
     visited_nodes = [False for i in range(len(g.graph.keys()))]
     leaders = [0 for i in range(len(g.graph.keys()))]
 
-    SecondDFSLoop(g, visited_nodes, finishing_times, leaders)
-    print("Leaders : " + str(leaders))
+    SecondDFSLoop(g, leaders)
 
     c = countSCCs(leaders)
     print(c)
@@ -87,4 +85,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    threading.stack_size(67108864) # 64MB stack
+    sys.setrecursionlimit(2 ** 20)  # approx 1 million recursions
+    thread = threading.Thread(target = main) # instantiate thread object
+    thread.start() # run program at targetmain()
