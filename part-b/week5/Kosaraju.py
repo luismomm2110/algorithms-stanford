@@ -1,5 +1,6 @@
 from Graph import Graph
 import collections
+from collections import deque
 import sys
 import threading
 
@@ -14,14 +15,16 @@ def fill_graph(textFile, graph):
 
 def FirstDFSLoop(g):
     global t, finishing_times, visited_nodes
+    visited_nodes = [False for i in range(len(g.graph.keys()))]
+    finishing_times = deque()
+
 
     for i in reversed(g.graph.keys()):
         if not visited_nodes[i-1]:
             FirstDFS(g, i)
 
-
 def FirstDFS(g, i):
-    global t, finishing_times, visited_nodes
+    global t, visited_nodes, finishing_times
 
     visited_nodes[i-1] = True
 
@@ -29,34 +32,33 @@ def FirstDFS(g, i):
         if not visited_nodes[edge-1]:
             FirstDFS(g, edge)
 
-    t += 1
-    finishing_times[i-1] = t
+    finishing_times.append(i)
+
+def SecondDFSLoop(g):
+    global scc_size, visited_nodes, finishing_times
+    leaders = [] 
+    visited_nodes = [False for i in range(len(g.graph.keys()))]
 
 
-def SecondDFSLoop(g, leaders):
-    global s, visited_nodes, finishing_times
-
-    for i in reversed(sorted(finishing_times)):
-        current_edge = list(g.graph.keys()).index(finishing_times.index(i) + 1) + 1
+    while finishing_times:
+        current_edge = finishing_times.pop()
 
         if not visited_nodes[current_edge-1]:
-            s = current_edge
-            secondDFS(g, current_edge, visited_nodes, leaders)
+            scc_size = 0
+            secondDFS(g, current_edge)
+            leaders.append(scc_size)
+    return leaders
 
 
-def secondDFS(g, i, visited_nodes, leaders):
-    global s
+def secondDFS(g, i):
+    global s, scc_size, visited_nodes 
     visited_nodes[i-1] = True
 
-    leaders[i-1] = s
     for edge in g.graph[i]:
         if not visited_nodes[edge - 1]:
-          return secondDFS(g, edge, visited_nodes, leaders)
+            secondDFS(g, edge)
 
-def countSCCs(leaders):
-    count = collections.Counter(leaders)
-    return count
-
+    scc_size += 1
 
 def main():
     global t, s, finishing_times,  visited_nodes
@@ -69,19 +71,11 @@ def main():
 
     gRev = g.reverse()
 
-    visited_nodes = [False for i in range(len(g.graph.keys()))]
-    finishing_times = [0 for i in range(len(g.graph.keys()))]
-
     FirstDFSLoop(gRev)
 
-    visited_nodes = [False for i in range(len(g.graph.keys()))]
-    leaders = [0 for i in range(len(g.graph.keys()))]
+    leaders = SecondDFSLoop(g)
 
-    SecondDFSLoop(g, leaders)
-
-    c = countSCCs(leaders)
-    print(c)
-
+    print(sorted(leaders, reverse = True)[0:5])
 
 
 if __name__ == "__main__":
