@@ -14,7 +14,7 @@ class TestHeap(unittest.TestCase):
         h = Heap()
         h.heap = [4, 4, 8, 9, 4, 12, 9, 11, 13]
 
-        parent = h.findParent(2)
+        parent = h.findParentIndex(2)
 
         self.assertEqual(1, parent)
 
@@ -22,7 +22,7 @@ class TestHeap(unittest.TestCase):
         h = Heap()
         h.heap = [4, 4, 8, 9, 4, 12, 9, 11, 13]
 
-        parent = h.findParent(3)
+        parent = h.findParentIndex(3)
 
         self.assertEqual(1, parent)
 
@@ -40,7 +40,7 @@ class TestHeap(unittest.TestCase):
         h = Heap()
         h.heap = [4, 4, 8, 9, 4, 12, 9, 11, 13, 7, 10]
 
-        h.insert(12)
+        h.insert(5)
 
         self.assertListEqual([4, 4, 5, 9, 4, 8, 9, 11, 13, 7, 10, 12], h.heap)
 
