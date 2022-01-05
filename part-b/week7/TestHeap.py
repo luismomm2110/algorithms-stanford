@@ -16,7 +16,7 @@ class TestHeap(unittest.TestCase):
 
         parent = h.findParentIndex(2)
 
-        self.assertEqual(1, parent)
+        self.assertEqual(0, parent)
 
     def test_find_parent_when_index_is_odd(self):
         h = Heap()
