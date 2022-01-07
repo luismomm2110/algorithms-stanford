@@ -44,6 +44,24 @@ class TestHeap(unittest.TestCase):
 
         self.assertListEqual([4, 4, 5, 9, 4, 8, 9, 11, 13, 7, 10, 12], h.heap)
 
+    def test_extract_min(self):
+        h = Heap()
+        h.heap = [4, 4, 8, 9, 4, 12, 9, 11, 13]
+
+        min = h.extract_root()
+
+        self.assertEqual(min, 4)
+        self.assertListEqual(h.heap, [4, 4, 8, 9, 13, 12, 9, 11])
+
+    def test_extract_max(self):
+        h = Heap(isMaxHeap=True)
+        h.heap = [-13, -12, -11, -9, -9, -8, -4, -4, -4]
+
+        max = h.extract_root()
+
+        self.assertEqual(max, 13)
+        self.assertListEqual(h.heap, [-12, -9, -11, -4, -9, -8, -4, -4])
+
 
 if __name__ == '__main__':
     unittest.main()
