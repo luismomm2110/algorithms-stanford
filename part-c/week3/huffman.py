@@ -22,7 +22,6 @@ def create_alphabeth(filepath):
 
 
 def build_tree(symbols, weights):
-
     while(len(symbols) >= 2):
         tree3 = Node("temp root")
 
