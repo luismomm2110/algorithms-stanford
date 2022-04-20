@@ -32,7 +32,7 @@ def knapsack(C, numItens, itens):
 
 
 def main():
-    size, numItens, itens = create_knapsack("./demo.txt")
+    size, numItens, itens = create_knapsack("./p1.txt")
     print(knapsack(size, numItens, itens))
 
 
