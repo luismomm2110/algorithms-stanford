@@ -22,7 +22,6 @@ def create_knapsack(path):
 
 def knapsack(wt, val, W, n, cache):
 
-    # base conditions
     if n == 0 or W == 0:
         return 0
 
