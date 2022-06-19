@@ -17,7 +17,7 @@ def open_file(path):
 
 
 def squared_euclidian_distance(origin, destiny):
-    return ((destiny[0]- origin[0])**2 + (destiny[1]- origin[1])**2 )
+    return sqrt((destiny[0]- origin[0])**2 + (destiny[1]- origin[1])**2)
 
 def find_nearest_neighbor(origin, next_cities):
     sorted_list = sorted(next_cities, key=lambda x: squared_euclidian_distance(origin, x))
@@ -46,13 +46,14 @@ def tsp(num_cities, cities):
     path.append(origin[2]+1)
 
 
-    return int(sqrt(distance)), path
+    return int(distance), path
 
 
 
 def main():
     num_cities, cities = open_file("p1.txt")
-    print(tsp(num_cities, cities))
+    distance, path = tsp(num_cities, cities)
+    print(distance)
 
 
 if __name__ == "__main__":

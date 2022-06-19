@@ -1,4 +1,5 @@
 import tsp2
+import math
 import unittest
 
 
@@ -23,12 +24,12 @@ class Test_tsp(unittest.TestCase):
         origin = [0, 0]
         destiny = [4, 4]
 
-        self.assertEqual(tsp2.squared_euclidian_distance(origin, destiny), 32)
+        self.assertEqual(tsp2.squared_euclidian_distance(origin, destiny), math.sqrt(32))
 
 
     def test_tsp_distance(self):    
         num_cities, cities = tsp2.open_file("teste.txt")
-        self.assertEqual(tsp2.tsp(num_cities, cities)[0], 6)
+        self.assertEqual(tsp2.tsp(num_cities, cities)[0], 15)
 
     def test_tsp_path(self):
         num_cities, cities = tsp2.open_file("teste.txt")
