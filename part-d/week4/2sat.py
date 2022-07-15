@@ -17,9 +17,12 @@ def main():
     g = Graph(count_variables)
 
     for clause in clauses:
-        g.add_edge(clause[0], clause[1])
+        g.add_edge(-clause[0], clause[1])
+        g.add_edge(-clause[1], clause[0])
+
 
     print(g.graph)
+    g.print_scc()
 
 
 if __name__ == "__main__":
