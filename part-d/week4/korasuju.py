@@ -18,6 +18,15 @@ class Graph:
             if not visited_vertex[i]:
                 self.dfs(i, visited_vertex)
 
+    # dfs
+    def dfs2(self, d, visited_vertex, scc):
+        visited_vertex[d] = True
+        scc.append(d)
+        print(d, end='')
+        for i in self.graph[d]:
+            if not visited_vertex[i]:
+                self.dfs2(i, visited_vertex)
+
     def fill_order(self, d, visited_vertex, stack):
         visited_vertex[d] = True
         for i in self.graph[d]:
@@ -50,6 +59,5 @@ class Graph:
         while stack:
             i = stack.pop()
             if not visited_vertex[i]:
-                gr.dfs(i, visited_vertex)
+                gr.dfs2(i, visited_vertex)
                 print("")
-
