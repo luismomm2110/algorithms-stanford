@@ -11,21 +11,12 @@ class Graph:
         self.graph[s].append(d)
 
     # dfs
-    def dfs(self, d, visited_vertex):
+    def dfs(self, d, visited_vertex, ssc):
         visited_vertex[d] = True
-        print(d, end='')
+        ssc.append(d)
         for i in self.graph[d]:
             if not visited_vertex[i]:
-                self.dfs(i, visited_vertex)
-
-    # dfs
-    def dfs2(self, d, visited_vertex, scc):
-        visited_vertex[d] = True
-        scc.append(d)
-        print(d, end='')
-        for i in self.graph[d]:
-            if not visited_vertex[i]:
-                self.dfs2(i, visited_vertex)
+                self.dfs(i, visited_vertex, ssc)
 
     def fill_order(self, d, visited_vertex, stack):
         visited_vertex[d] = True
@@ -44,7 +35,7 @@ class Graph:
         return g
 
     # Print stongly connected components
-    def print_scc(self):
+    def solve2sat(self):
         stack = []
         visited_vertex = [False] * (self.V)
 
@@ -59,5 +50,20 @@ class Graph:
         while stack:
             i = stack.pop()
             if not visited_vertex[i]:
-                gr.dfs2(i, visited_vertex)
-                print("")
+                ssc = []
+                gr.dfs(i, visited_vertex, ssc)
+                normalized_ssc = [int(k/2) for k in ssc]
+                if (check_duplicates(normalized_ssc)):
+                    return False
+        return True
+
+
+def check_duplicates(listOfElems):
+    ''' Check if given list contains any duplicates '''
+    setOfElems = set()
+    for elem in listOfElems:
+        if elem in setOfElems:
+            return True
+        else:
+            setOfElems.add(elem)
+    return False
